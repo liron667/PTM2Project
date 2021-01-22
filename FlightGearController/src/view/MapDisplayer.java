@@ -6,12 +6,12 @@ import javafx.scene.paint.Color;
 
 public class MapDisplayer extends Canvas {
     // Data members.
-	int[][] mapData;
+	int[][] map;
     double min = Double.MAX_VALUE;
     double max = 0;
 
     public void setMapData(int[][] mapData) {
-        this.mapData = mapData;
+        this.map = mapData;
 
         for(int i = 0; i < mapData.length; i++) {
             for (int j = 0; j < mapData[i].length; j++) {
@@ -34,19 +34,19 @@ public class MapDisplayer extends Canvas {
 
     // Redraws the map on canvas.
     public void redraw() {
-        if(mapData != null) {
-            double H = getHeight();
-            double W = getWidth();
-            double h = H / mapData.length;
-            double w = W / mapData[0].length;
+        if(map != null) {
+            double height = getHeight();
+            double width = getWidth();
+            double mapHeight = height / map.length;
+            double mapWidth = width / map[0].length;
             
             GraphicsContext gc = getGraphicsContext2D();
 
-            for (int i = 0; i < mapData.length; i++) {
-                for (int j = 0; j < mapData[i].length; j++) {
-                    int tmp = mapData[i][j];
+            for (int i = 0; i < map.length; i++) {
+                for (int j = 0; j < map[i].length; j++) {
+                    int tmp = map[i][j];
                     gc.setFill(Color.rgb((255 - tmp), (0 + tmp), 0));
-                    gc.fillRect((j * w), (i * h), w, h);
+                    gc.fillRect((j * mapWidth), (i * mapHeight), mapWidth, mapHeight);
                 }
             }
         }

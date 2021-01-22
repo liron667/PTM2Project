@@ -9,54 +9,38 @@ import java.util.Observer;
 import java.util.Scanner;
 
 public class ViewModel extends Observable implements Observer {
-    // Data members.
-	public DoubleProperty throttle;
-    public DoubleProperty rudder;
-    public DoubleProperty aileron;
-    public DoubleProperty elevator;
-    public DoubleProperty airplaneX;
-    public DoubleProperty airplaneY;
-    public DoubleProperty startX;
-    public DoubleProperty startY;
-    public DoubleProperty offset;
-    public DoubleProperty heading;
-    public DoubleProperty markSceneX;
-    public DoubleProperty markSceneY;
-    
-    public StringProperty script;
-    public StringProperty ip;
-    public StringProperty port;
-    
+
+	public DoubleProperty throttleXairplane,Yairplane;
+    public DoubleProperty Ystart, Xstart;
+    public DoubleProperty XmarkScene, YmarkScene;
+    public DoubleProperty offset ,heading ,rudder, aileron, lift;
+    public StringProperty script, ip ,port;
     public BooleanProperty path;
-    
     private int data[][];
-    
     private Model model;
- 
-    // CTOR.
+
     public ViewModel() {
         throttle = new SimpleDoubleProperty();
         rudder = new SimpleDoubleProperty();
         aileron = new SimpleDoubleProperty();
-        elevator = new SimpleDoubleProperty();
-        airplaneX = new SimpleDoubleProperty();
-        airplaneY = new SimpleDoubleProperty();
-        startX = new SimpleDoubleProperty();
-        startY = new SimpleDoubleProperty();
+        lift = new SimpleDoubleProperty();
+        Xairplane = new SimpleDoubleProperty();
+        Yairplane = new SimpleDoubleProperty();
+        Xstart = new SimpleDoubleProperty();
+        Ystart = new SimpleDoubleProperty();
         offset = new SimpleDoubleProperty();
         heading = new SimpleDoubleProperty();
-        markSceneX = new SimpleDoubleProperty();
-        markSceneY = new SimpleDoubleProperty();
+        XmarkScene = new SimpleDoubleProperty();
+        YmarkScene = new SimpleDoubleProperty();
         script = new SimpleStringProperty();
         ip = new SimpleStringProperty();
         port = new SimpleStringProperty();
         path = new SimpleBooleanProperty();
     }
-    
-    // Setters.
+
     public void setData(int[][] data) {
         this.data = data;
-        model.GetPlane(startX.getValue(),startY.doubleValue(),offset.getValue());
+        model.GetPlane(Xstart.getValue(), Ystart.doubleValue(),offset.getValue());
     }
     
     public void setModel(Model model) { this.model=model; }
@@ -74,15 +58,15 @@ public class ViewModel extends Observable implements Observer {
     public void setJoystick() {
         String[] data = {
                 "set /controls/flight/aileron " + aileron.getValue(),
-                "set /controls/flight/elevator " + elevator.getValue(),
+                "set /controls/flight/elevator " + lift.getValue(),
         };
         model.send(data);
     }
     
-    // Calls the Models to connect to the manual controller.
+    // connect to the manual controller.
     public void connect() { model.connectManual(ip.getValue(),Integer.parseInt(port.getValue())); }
 
-    // Parsers the received script using the Model's interpreter.
+    // Parsers the received scrip
     public void parse() {
         Scanner scanner = new Scanner(script.getValue());
         ArrayList<String> list = new ArrayList<>();
@@ -91,34 +75,30 @@ public class ViewModel extends Observable implements Observer {
         {
             list.add(scanner.nextLine());
         }
-        
         String[] tmp = new String[list.size()];
-        
+
         for(int i = 0; i < list.size(); i++)
         {
             tmp[i] = list.get(i);
         }
-        
         model.parse(tmp);
-        
         scanner.close();
     }
 
-    // Executes the received script using the Model's interpreter. 
     public void execute() { model.execute(); }
 
-    // Calls the Models to stop the autopilot controller.
+    //  autopilot controller.
     public void stopAutoPilot(){ model.stopAutoPilot(); }
 
-    // Calls the Models to find the shortest-path from the plane to its destination.
+    // find the shortest-path from the plane to its destination.
     public void findPath(double h,double w) {
     	// Checks for if it's the first time, then needed to connect.
     	if (!path.getValue()) { model.connectPath(ip.getValue(), Integer.parseInt(port.getValue())); }
     	
-        model.findPath((int)(airplaneY.getValue() / (-1)),
-        			   (int)(airplaneX.getValue() + (15)), 
-        			   Math.abs((int)(markSceneY.getValue() / h)), 
-        			   Math.abs((int)(markSceneX.getValue() / w)), 
+        model.findPath((int)(Yairplane.getValue() / (-1)),
+        			   (int)(Xairplane.getValue() + (15)), 
+        			   Math.abs((int)(YmarkScene.getValue() / h)),
+        			   Math.abs((int)(XmarkScene.getValue() / w)),
         			   data);
     }
 
@@ -131,11 +111,11 @@ public class ViewModel extends Observable implements Observer {
             if(tmp[0].equals("plane")) {
                 double x = Double.parseDouble(tmp[1]);
                 double y = Double.parseDouble(tmp[2]);
-                x = (x - startX.getValue() + offset.getValue());
+                x = (x - Xstart.getValue() + offset.getValue());
                 x /= offset.getValue();
-                y = (y - startY.getValue() + offset.getValue()) / offset.getValue();
-                airplaneX.setValue(x);
-                airplaneY.setValue(y);
+                y = (y - Ystart.getValue() + offset.getValue()) / offset.getValue();
+                Xairplane.setValue(x);
+                Yairplane.setValue(y);
                 heading.setValue(Double.parseDouble(tmp[3]));
                 setChanged();
                 notifyObservers();
