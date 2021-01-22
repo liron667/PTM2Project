@@ -20,8 +20,8 @@
             <Button layoutX="98.0" layoutY="29.0" mnemonicParsing="false" onAction="#LoadDate" text="Load Map" style="-fx-background-color:#a2b1ea" />
 			<Button fx:id="calc" layoutX="193.0" layoutY="29.0" mnemonicParsing="false" onAction="#Calc" text="Calculate Path" style="-fx-background-color:#a2b1ea" />
             <TextArea fx:id="TextArea" layoutX="338.0" layoutY="84.0" prefHeight="312.0" prefWidth="224.0" style="-fx-control-inner-background:#FFFFFF" />
-            <RadioButton fx:id="auto" layoutX="336.0" layoutY="29.0" mnemonicParsing="false" onAction="#AutoPilot" text="AutoPilot" />
-            <RadioButton fx:id="manual" layoutX="599.0" layoutY="29.0" mnemonicParsing="false" onAction="#Manual" text="Manual" />
+            <RadioButton fx:id="automatic" layoutX="336.0" layoutY="29.0" mnemonicParsing="false" onAction="#AutoPilot" text="AutoPilot" />
+            <RadioButton fx:id="manualy" layoutX="599.0" layoutY="29.0" mnemonicParsing="false" onAction="#Manual" text="Manual" />
             <Button layoutX="420.0" layoutY="29.0" mnemonicParsing="false" onAction="#LoadText" text="Load Script" style="-fx-background-color:#a2b1ea" />
             <Slider fx:id="throttle" layoutX="590.0" layoutY="105.0" majorTickUnit="0.1" max="1.0" minorTickCount="1" orientation="VERTICAL" prefHeight="214.0" prefWidth="49.0" showTickLabels="true" showTickMarks="true" />
             <Slider fx:id="rudder" layoutX="656.0" layoutY="348.0" majorTickUnit="0.1" max="1.0" min="-1.0" minorTickCount="1" prefHeight="18.0" prefWidth="225.0" showTickLabels="true" showTickMarks="true" />
@@ -29,7 +29,7 @@
             <Circle fx:id="Joystick" fill="#ededed" layoutX="768.0" layoutY="212.0" radius="35.0" stroke="BLACK" strokeType="INSIDE" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" />
 			<MapDisplayer fx:id="map" height="302.0" layoutX="14.0" layoutY="89.0" width="300.0" />
 			<Canvas fx:id="airplane" height="302.0" layoutX="14.0" layoutY="89.0" width="300.0" />
-            <Canvas fx:id="markX" height="302.0" layoutX="14.0" layoutY="89.0" width="300.0" />
+            <Canvas fx:id="xMark" height="302.0" layoutX="14.0" layoutY="89.0" width="300.0" />
             <Text layoutX="746.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rudder" style="-fx-font-size:20px;" />
             <Text layoutX="555.0" layoutY="217.0" rotate="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Throttle" style="-fx-font-size:20px;" />
             <Text layoutX="725.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;- aileron -&gt;" style="-fx-font-size:20px" />

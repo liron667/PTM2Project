@@ -7,7 +7,7 @@ public class Var extends Observable implements Observer {
 	// Data members.
 	double value;
 	String var_name;
-	String Loc;
+	String location;
 	
 	// CTOR.
 	public Var() {}
@@ -15,13 +15,13 @@ public class Var extends Observable implements Observer {
 	// CTOR.
 	public Var(String loc) {
 		super();
-		Loc = loc;
+		location = loc;
 	}
 	
 	// CTOR.
 	public Var(double v) {
 		this.value = v;
-		this.Loc = null;
+		this.location = null;
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class Var extends Observable implements Observer {
 	}
 
 	@Override
-	public String toString() { return this.Loc; }
+	public String toString() { return this.location; }
 
 
 	// Set & Get value.
@@ -56,6 +56,6 @@ public class Var extends Observable implements Observer {
 	public String getName() { return var_name; }
 	
 	// Set & Get Loc.
-	public void setLoc(String loc) { Loc = loc; }
-	public String getLoc() { return Loc; }
+	public void setLoc(String loc) { location = loc; }
+	public String getLoc() { return location; }
 }
