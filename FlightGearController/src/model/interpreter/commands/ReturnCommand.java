@@ -11,6 +11,6 @@ public class ReturnCommand implements Command {
         StringBuilder exp = new StringBuilder();
         for (int i = 1; i < array.length; i++) { exp.append(array[i]); }
         
-        Parser.returnval = ShuntingYardPostfix.calc(exp.toString());
+        Parser.returnvalue = ShuntingYardPostfix.calc(exp.toString());
     }
 }

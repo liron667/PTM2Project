@@ -6,8 +6,8 @@ public class PrintCommand implements Command {
     @Override
     public void doCommand(String[] array) {
        for (int i=1;i<array.length;i++) {
-           if(Parser.symTbl.containsKey(array[i]))  { 
-        	   	System.out.print(array[i]+Parser.symTbl.get(array[i]).getV());
+           if(Parser.symTable.containsKey(array[i]))  { 
+        	   	System.out.print(array[i]+Parser.symTable.get(array[i]).getV());
            } else { System.out.print(array[i]); }
        }
    

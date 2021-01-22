@@ -24,7 +24,7 @@ public class ShuntingYardPostfix {
 				token = expression.charAt(i) + "";
 				while (i<expression.length()-1&&((expression.charAt(i+1) >= 'A' && expression.charAt(i+1) <= 'Z')||(expression.charAt(i+1) >= 'a' && expression.charAt(i+1) <= 'z')))
 					token = token + expression.charAt(++i);
-				token= Parser.symTbl.get(token).getV()+"";
+				token= Parser.symTable.get(token).getV()+"";
 			} else
 				token = expression.charAt(i) + "";
 

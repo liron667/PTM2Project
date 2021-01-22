@@ -6,7 +6,7 @@ import java.util.Observer;
 public class Var extends Observable implements Observer {
 	// Data members.
 	double value;
-	String name;
+	String var_name;
 	String Loc;
 	
 	// CTOR.
@@ -52,8 +52,8 @@ public class Var extends Observable implements Observer {
 	public double getV() { return value; }
 	
 	// Set & Get Name.
-	public void setName(String name) { this.name = name; }
-	public String getName() { return name; }
+	public void setName(String name) { this.var_name = name; }
+	public String getName() { return var_name; }
 	
 	// Set & Get Loc.
 	public void setLoc(String loc) { Loc = loc; }

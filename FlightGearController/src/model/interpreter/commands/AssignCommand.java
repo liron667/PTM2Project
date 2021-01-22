@@ -7,12 +7,12 @@ public class AssignCommand implements Command {
     @Override
     public void doCommand(String[] array) {
         if (array[2].equals("bind")) {
-            if(Parser.symTbl.get(array[0]).getV()!=Parser.symTbl.get(array[3]).getV()) { 
-            	Parser.symTbl.get(array[0]).setV(Parser.symTbl.get(array[3]).getV()); 
+            if(Parser.symTable.get(array[0]).getV()!=Parser.symTable.get(array[3]).getV()) { 
+            	Parser.symTable.get(array[0]).setV(Parser.symTable.get(array[3]).getV()); 
             }
             
-            Parser.symTbl.get(array[3]).addObserver(Parser.symTbl.get(array[0]));
-            Parser.symTbl.get(array[0]).addObserver(Parser.symTbl.get(array[3]));
+            Parser.symTable.get(array[3]).addObserver(Parser.symTable.get(array[0]));
+            Parser.symTable.get(array[0]).addObserver(Parser.symTable.get(array[3]));
         } else {
             StringBuilder exp = new StringBuilder();
             
@@ -20,11 +20,11 @@ public class AssignCommand implements Command {
             
             double tmp = ShuntingYardPostfix.calc(exp.toString());
             
-            if(Parser.symTbl.get(array[0]).getLoc()!=null) {
-                ConnectCommand.out.println("set " + Parser.symTbl.get(array[0]).getLoc() + " " + tmp);
+            if(Parser.symTable.get(array[0]).getLoc()!=null) {
+                ConnectCommand.out.println("set " + Parser.symTable.get(array[0]).getLoc() + " " + tmp);
                 ConnectCommand.out.flush();
-                System.out.println("set " + Parser.symTbl.get(array[0]).getLoc() + " " + tmp);
-            } else { Parser.symTbl.get(array[0]).setV(tmp); }
+                System.out.println("set " + Parser.symTable.get(array[0]).getLoc() + " " + tmp);
+            } else { Parser.symTable.get(array[0]).setV(tmp); }
         }
     }
 }

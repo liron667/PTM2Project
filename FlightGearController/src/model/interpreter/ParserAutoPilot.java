@@ -22,8 +22,8 @@ public class ParserAutoPilot {
     public void execute() {
         exe = new Thread(() -> {
             while(!close) {
-                while ((!stop) && (i < parser.comds.size())) {
-                    parser.comds.get(i).calculate();
+                while ((!stop) && (i < parser.commandsList.size())) {
+                    parser.commandsList.get(i).calculate();
                     i++;
                 }
             }
@@ -33,26 +33,27 @@ public class ParserAutoPilot {
     }
 
     public void add(ArrayList<String[]> lines) {
+    	String stop ="&&stop!=0" ;
         parser.lines.clear();
         parser.lines.addAll(lines);
         
-        Parser.symTbl.put("stop",new Var(1));
+        Parser.symTable.put("stop",new Var(1));
         
         for (String[] strings : parser.lines) {
             if (strings[0].equals("while")) {
                 StringBuilder tmp = new StringBuilder(strings[strings.length - 2]);
-                tmp.append("&&stop!=0");
+                tmp.append(stop);
                 strings[strings.length - 2] = tmp.toString();
             }
         }
     }
     
     public void stop() {
-        Var v = Parser.symTbl.get("stop");
+        Var v = Parser.symTable.get("stop");
         if(v != null) { v.setV(0); }
         
         ParserAutoPilot.stop = true;
     }
     
-    public void Continue() { Parser.symTbl.get("stop").setV(1); }
+    public void Continue() { Parser.symTable.get("stop").setV(1); }
 }

@@ -29,54 +29,32 @@ import java.util.*;
 public class FlightController implements Initializable, Observer {
 	// Data members.
 	@FXML
-    private Canvas airplane;
-    @FXML
-    private Canvas markX;
+    private Canvas airplane, xMark;
     @FXML
     private  TextArea TextArea;
     @FXML
-    private TextField port;
-    @FXML
-    private TextField ip;
+    private TextField port, ip;
     @FXML
     private Button submit;
     @FXML
-    private Slider throttle;
+    private Slider throttle, rudder;
     @FXML
-    private Slider rudder;
-    @FXML
-    private RadioButton auto;
+    private RadioButton automatic, manual;
     @FXML
     private MapDisplayer map;
     @FXML
-    private RadioButton manual;
-    @FXML
-    private Circle border;
-    @FXML
-    private Circle Joystick;
+    private Circle border, Joystick;
     @FXML
     private TitledPane background;
 
     private Stage stage = new Stage();
     
     private static int Who;
-    double orgSceneX; 
-    double orgSceneY;
-    double orgTranslateX;
+    double originalX, originalY, originalTranslateX, originalTranslateY;
     private ViewModel viewModel;
-    double orgTranslateY;
-    public DoubleProperty markSceneX;
-    public DoubleProperty markSceneY;
-    public DoubleProperty aileron;
-    public DoubleProperty elevator;
-    public DoubleProperty airplaneX;
-    public DoubleProperty airplaneY;
-    public DoubleProperty startX;
-    public DoubleProperty startY;
-    public DoubleProperty offset;
-    public DoubleProperty heading;
-    public double lastX;
-    public double lastY;
+
+    public DoubleProperty xMarkScene, yMarkScene,aileron,elevator,xAirplane,yAirplane,xStart,yStart,offset,heading;
+    public double lastX, lastY;
     public int mapData[][];
     private Image plane[];
     private Image mark;
@@ -97,8 +75,8 @@ public class FlightController implements Initializable, Observer {
             try {
                 bufferedReader = new BufferedReader(new FileReader(fileChooser.getSelectedFile()));
                 String[] start = bufferedReader.readLine().split(cvsSplitBy);
-                startX.setValue(Double.parseDouble(start[0]));
-                startY.setValue(Double.parseDouble(start[1]));
+                xStart.setValue(Double.parseDouble(start[0]));
+                yStart.setValue(Double.parseDouble(start[1]));
                 start = bufferedReader.readLine().split(cvsSplitBy);
                 offset.setValue(Double.parseDouble(start[0]));
                 
@@ -108,12 +86,12 @@ public class FlightController implements Initializable, Observer {
                 
                 mapData = new int[numbers.size()][];
 
-                for (int i = 0; i < numbers.size(); i++) {
-                    mapData[i] = new int[numbers.get(i).length];
+                for (int index = 0; index < numbers.size(); index++) {
+                    mapData[index] = new int[numbers.get(index).length];
 
-                    for (int j = 0; j < numbers.get(i).length; j++) {
-                        String tmp = numbers.get(i)[j];
-                        mapData[i][j] = Integer.parseInt(tmp);
+                    for (int index2 = 0; index2 < numbers.get(index).length; index2++) {
+                        String temp = numbers.get(index)[index2];
+                        mapData[index][index2] = Integer.parseInt(temp);
                     }
                 }
 
@@ -148,15 +126,16 @@ public class FlightController implements Initializable, Observer {
     }
 
     public void Connect() {
+    	String popUpMessage= "PopupMessage.fxml";
         Parent root = null;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PopupMessage.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(popUpMessage));
             root = fxmlLoader.load();
             
             FlightController fc = fxmlLoader.getController();
             fc.viewModel = this.viewModel;
             
-            stage.setTitle("M e s s a g e");
+            stage.setTitle("Connection Window");
             stage.setScene(new Scene(root));
             
             if(!stage.isShowing()) {
@@ -176,11 +155,11 @@ public class FlightController implements Initializable, Observer {
             
             fc.viewModel = this.viewModel;
             fc.mapData = this.mapData;
-            fc.markX = this.markX;
+            fc.xMark = this.xMark;
             fc.path = new SimpleBooleanProperty();
             fc.path.bindBidirectional(this.path);
             
-            stage.setTitle("M e s s a g e");
+            stage.setTitle("Connection Window");
             stage.setScene(new Scene(root));
             
             if(!stage.isShowing()) {
@@ -202,8 +181,8 @@ public class FlightController implements Initializable, Observer {
         }
         
         if(Who == 1) {
-            double H = markX.getHeight();
-            double W = markX.getWidth();
+            double H = xMark.getHeight();
+            double W = xMark.getWidth();
             double h = H / mapData.length;
             double w = W / mapData[0].length;
         
@@ -227,14 +206,14 @@ public class FlightController implements Initializable, Observer {
         if(s.equals("auto")) {
             if(manual.isSelected()) {
                 manual.setSelected(false);
-                auto.setSelected(true);
+                automatic.setSelected(true);
 
             }
             
             viewModel.execute();
         } else if(s.equals("manual")) {
-            if(auto.isSelected()) {
-                auto.setSelected(false);
+            if(automatic.isSelected()) {
+                automatic.setSelected(false);
                 manual.setSelected(true);
                 viewModel.stopAutoPilot();
             }
@@ -242,15 +221,15 @@ public class FlightController implements Initializable, Observer {
     }
 
     public void drawAirplane() {
-        if((airplaneX.getValue() != null) && (airplaneY.getValue() != null)) {
+        if((xAirplane.getValue() != null) && (yAirplane.getValue() != null)) {
             double H = airplane.getHeight();
             double W = airplane.getWidth();
             double h = H / mapData.length;
             double w = W / mapData[0].length;
             
             GraphicsContext gc = airplane.getGraphicsContext2D();
-            lastX = airplaneX.getValue();
-            lastY = airplaneY.getValue()*-1;
+            lastX = xAirplane.getValue();
+            lastY = yAirplane.getValue()*-1;
             
             gc.clearRect(0,0,W,H);
 
@@ -266,31 +245,31 @@ public class FlightController implements Initializable, Observer {
     }
 
     public void drawMark() {
-        double H = markX.getHeight();
-        double W = markX.getWidth();
+        double H = xMark.getHeight();
+        double W = xMark.getWidth();
         double h = H / mapData.length;
         double w = W / mapData[0].length;
         
-        GraphicsContext gc = markX.getGraphicsContext2D();
+        GraphicsContext gc = xMark.getGraphicsContext2D();
         
         gc.clearRect(0, 0, W, H);
-        gc.drawImage(mark, (markSceneX.getValue() - 13), markSceneY.getValue() , 25, 25);
+        gc.drawImage(mark, (xMarkScene.getValue() - 13), yMarkScene.getValue() , 25, 25);
        
         if(path.getValue()) { viewModel.findPath(h,w); }
     }
 
     public void drawLine() {
-        double H = markX.getHeight();
-        double W = markX.getWidth();
+        double H = xMark.getHeight();
+        double W = xMark.getWidth();
         double h = H / mapData.length;
         double w = W / mapData[0].length;
         
-        GraphicsContext gc=markX.getGraphicsContext2D();
+        GraphicsContext gc=xMark.getGraphicsContext2D();
         
         String move=solution[1];
         
-        double x = airplaneX.getValue() * w + (10 * w);
-        double y =airplaneY.getValue() * -h + 6*h;
+        double x = xAirplane.getValue() * w + (10 * w);
+        double y =yAirplane.getValue() * -h + 6*h;
  
         for(int i = 2; i < solution.length; i++) {
             switch (move) {
@@ -322,8 +301,8 @@ public class FlightController implements Initializable, Observer {
     EventHandler<MouseEvent> MarkOnMousePressedEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            markSceneX.setValue(e.getX());
-            markSceneY.setValue(e.getY());
+            xMarkScene.setValue(e.getX());
+            yMarkScene.setValue(e.getY());
             drawMark();
         }
     };
@@ -331,20 +310,20 @@ public class FlightController implements Initializable, Observer {
     EventHandler<MouseEvent> circleOnMousePressedEventHandler = new EventHandler<MouseEvent>() {
     	@Override
         public void handle(MouseEvent t) {
-        	orgSceneX = t.getSceneX();
-            orgSceneY = t.getSceneY();
-            orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
-            orgTranslateY = ((Circle)(t.getSource())).getTranslateY();
+        	originalX = t.getSceneX();
+            originalY = t.getSceneY();
+            originalTranslateX = ((Circle)(t.getSource())).getTranslateX();
+            originalTranslateY = ((Circle)(t.getSource())).getTranslateY();
     	}
     };
 
     EventHandler<MouseEvent> circleOnMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent t) {
-        	double offsetX = t.getSceneX() - orgSceneX;
-            double offsetY = t.getSceneY() - orgSceneY;
-            double newTranslateX = orgTranslateX + offsetX;
-            double newTranslateY = orgTranslateY + offsetY;
+        	double offsetX = t.getSceneX() - originalX;
+            double offsetY = t.getSceneY() - originalY;
+            double newTranslateX = originalTranslateX + offsetX;
+            double newTranslateY = originalTranslateY + offsetY;
             
             if(isInCircle(newTranslateX,newTranslateY)) {
             	((Circle) (t.getSource())).setTranslateX(newTranslateX);
@@ -362,8 +341,8 @@ public class FlightController implements Initializable, Observer {
     EventHandler<MouseEvent> circleOnMouseReleasedEventHandler = new EventHandler<MouseEvent>() {
     	@Override
         public void handle(MouseEvent t) {
-    		((Circle)(t.getSource())).setTranslateX(orgTranslateX);
-            ((Circle)(t.getSource())).setTranslateY(orgTranslateY);
+    		((Circle)(t.getSource())).setTranslateX(originalTranslateX);
+            ((Circle)(t.getSource())).setTranslateY(originalTranslateY);
     	}
 	};	
 	
@@ -397,23 +376,23 @@ public class FlightController implements Initializable, Observer {
         elevator = new SimpleDoubleProperty();
         aileron.bindBidirectional(viewModel.aileron);
         elevator.bindBidirectional(viewModel.elevator);
-        airplaneX = new SimpleDoubleProperty();
-        airplaneY = new SimpleDoubleProperty();
-        startX = new SimpleDoubleProperty();
-        startY = new SimpleDoubleProperty();
-        airplaneX.bindBidirectional(viewModel.airplaneX);
-        airplaneY.bindBidirectional(viewModel.airplaneY);
-        startX.bindBidirectional(viewModel.startX);
-        startY.bindBidirectional(viewModel.startY);
+        xAirplane = new SimpleDoubleProperty();
+        yAirplane = new SimpleDoubleProperty();
+        xStart = new SimpleDoubleProperty();
+        yStart = new SimpleDoubleProperty();
+        xAirplane.bindBidirectional(viewModel.airplaneX);
+        yAirplane.bindBidirectional(viewModel.airplaneY);
+        xStart.bindBidirectional(viewModel.startX);
+        yStart.bindBidirectional(viewModel.startY);
         offset = new SimpleDoubleProperty();
         offset.bindBidirectional(viewModel.offset);
         viewModel.script.bindBidirectional(TextArea.textProperty());
         heading = new SimpleDoubleProperty();
         heading.bindBidirectional(viewModel.heading);
-        markSceneX = new SimpleDoubleProperty();
-        markSceneY = new SimpleDoubleProperty();
-        markSceneY.bindBidirectional(viewModel.markSceneY);
-        markSceneX.bindBidirectional(viewModel.markSceneX);
+        xMarkScene = new SimpleDoubleProperty();
+        yMarkScene = new SimpleDoubleProperty();
+        yMarkScene.bindBidirectional(viewModel.markSceneY);
+        xMarkScene.bindBidirectional(viewModel.markSceneX);
         path = new SimpleBooleanProperty();
         path.bindBidirectional(viewModel.path);
         path.setValue(false);
@@ -447,7 +426,7 @@ public class FlightController implements Initializable, Observer {
             Joystick.setOnMouseDragged(circleOnMouseDraggedEventHandler);
             Joystick.setOnMouseReleased(circleOnMouseReleasedEventHandler);
             
-            markX.setOnMouseClicked(MarkOnMousePressedEventHandler);
+            xMark.setOnMouseClicked(MarkOnMousePressedEventHandler);
             
             Who =- 1;
         }

@@ -11,16 +11,16 @@ public class DefineVarCommand implements Command {
 		Var v = new Var();
 		if(array.length > 2) {
 			if(array[3].equals("bind")) {
-				Parser.symTbl.put(array[1],Parser.symTbl.get(array[4]));
+				Parser.symTable.put(array[1],Parser.symTable.get(array[4]));
 			} else {
 				StringBuilder exp = new StringBuilder();
 				
 				for (int i = 3; i < array.length; i++) { exp.append(array[i]); }
 				
 				v.setV(ShuntingYardPostfix.calc(exp.toString()));
-				Parser.symTbl.put(array[1],v);
+				Parser.symTable.put(array[1],v);
 			}
 		} else
-			Parser.symTbl.put(array[1],new Var()); 
+			Parser.symTable.put(array[1],new Var()); 
 		}
 }

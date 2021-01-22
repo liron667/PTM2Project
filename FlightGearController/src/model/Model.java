@@ -19,7 +19,7 @@ public class Model extends Observable implements Observer {
     public static volatile boolean turn = true;
     public static volatile boolean head = false;
     private Interpreter interpter;
-    private static Socket socketpath;
+    private static Socket socket;
     private static PrintWriter outpath;
     private static BufferedReader in;
     double xCordinate, yCordinate, xPlane, yPlane, xMark, yMark, offset, currentXLocation, currentYLocation, currentHeading;
@@ -107,9 +107,9 @@ public class Model extends Observable implements Observer {
 
     public void connectPath(String ip,int port) {
         try {
-            socketpath = new Socket(ip,port);
-            outpath = new PrintWriter(socketpath.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(socketpath.getInputStream()));
+            socket = new Socket(ip,port);
+            outpath = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException e) { e.printStackTrace(); }
     }
 
@@ -205,11 +205,11 @@ public class Model extends Observable implements Observer {
             }
             
             if((Math.abs(heading-headingC) > 9) && (Math.abs(heading-headingC) < 349)) {
-                Parser.symTbl.get("r").setV(tmp/20);
-                Parser.symTbl.get("e").setV(0.095);
+                Parser.symTable.get("r").setV(tmp/20);
+                Parser.symTable.get("e").setV(0.095);
             } else {
-                Parser.symTbl.get("r").setV(tmp / 100);
-                Parser.symTbl.get("e").setV(0.053);
+                Parser.symTable.get("r").setV(tmp / 100);
+                Parser.symTable.get("e").setV(0.053);
             }
             
             try {
@@ -302,7 +302,7 @@ public class Model extends Observable implements Observer {
             pathY = currentYLocation;
         }
         
-        Parser.symTbl.get("goal").setV(1);
+        Parser.symTable.get("goal").setV(1);
     }
     
     private void buildFlyPlan(String[] solution) {
@@ -419,7 +419,7 @@ public class Model extends Observable implements Observer {
         
         while((minus > 30) && (minus < 335) && (!Model.turn)) {
             double tmp = t.Do(h);
-            Parser.symTbl.get("hroute").setV(tmp);
+            Parser.symTable.get("hroute").setV(tmp);
             try {
                 Thread.sleep(2500);
             } catch (InterruptedException e) { e.printStackTrace(); }
@@ -428,7 +428,7 @@ public class Model extends Observable implements Observer {
             h = tmp;
         }
         
-        Parser.symTbl.get("hroute").setV(heading);
+        Parser.symTable.get("hroute").setV(heading);
     }
     
     public double turnPlus(double currentHeading) {
@@ -454,7 +454,7 @@ public class Model extends Observable implements Observer {
         try {
             if ( in != null) { in.close(); }
             
-            if (socketpath!=null) { socketpath.close(); }
+            if (socket!=null) { socket.close(); }
         } catch (IOException e) { e.printStackTrace(); }
         
         clientSimulator.stop();

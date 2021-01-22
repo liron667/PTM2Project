@@ -41,8 +41,8 @@ public class OpenDataServer implements Command {
 						Line = buuBufferedReader.readLine();
 						String[] vars = Line.split(",");
 						for (int i = 0; i < vars.length; i++) {
-							if(Double.parseDouble(vars[i]) != Parser.symTbl.get(Parser.vars.get(i)).getV()) {
-								Parser.symTbl.get(Parser.vars.get(i)).setV(Double.parseDouble(vars[i]));
+							if(Double.parseDouble(vars[i]) != Parser.symTable.get(Parser.vars.get(i)).getV()) {
+								Parser.symTable.get(Parser.vars.get(i)).setV(Double.parseDouble(vars[i]));
 							}
 						}
 					} catch(IOException e1) { e1.printStackTrace(); }

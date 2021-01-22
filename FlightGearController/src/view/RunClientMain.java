@@ -24,7 +24,7 @@ public class RunClientMain extends Application {
         viewModel.addObserver(ctrl);
         ctrl.setViewModel(viewModel);
         
-        primaryStage.setTitle("F l i g h t    G e a r    S i m u l a t o r");
+        primaryStage.setTitle("Flight Simulator");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
@@ -33,7 +33,7 @@ public class RunClientMain extends Application {
             command.doCommand(disconnect);
             ParserAutoPilot.exe.interrupt();
             model.stopAll();
-            System.out.println("bye");
+            System.out.println("closing");
         });
     }
 
