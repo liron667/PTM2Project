@@ -1,7 +1,7 @@
 # Advanced Software Development - Final Project
 
 # Flight Simulator Controller 
-![Presentation Project](/UML/example.png)
+![Presentation Project](/Images/example.png)
 
 ## Server
 
@@ -51,13 +51,13 @@ We created the ```CacheManager``` interface to manage the cache for us, with the
 
 ## UML
 
-![ServerClient Java UML](/UML/project_uml.png "ServerClient Java UML")
+![ServerClient Java UML](/Images/project_uml.png "ServerClient Java UML")
 
 ### The Problem Server
 Given a graph, it could solve it using [A-star](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm ( which is already implemented in this project based on djkistra algorithm using manhattan distances ) or any other search algorithm.
 
 <p align="center">
-  <img src="/UML/server_bridgepattern.png" width="600">
+  <img src="/Images/server_bridgepattern.png" width="600">
 </p>
 In our concrete server, given a weighted graph, it will run the search algorithm, and as an output it will return the cheapest route to the target.
 
@@ -112,7 +112,7 @@ We can see that arithmetic expressions are supported as well, and to interpret t
 ### Command Pattern
 
 <p align="center">
-  <img src="/UML/CommandPattern.png" width="600">
+  <img src="/Images/CommandPattern.png" width="600">
 </p>
 
 In this project there is an extensive use of commands, the plane needs to receive a lot of instructions in a short period of time 
@@ -128,7 +128,7 @@ So if, for example, we take a look at the "loop" command or "if" command, then w
 ---
 ### Interpreter stages
 
-![Presentation Project](/UML/interpreter.png)
+![Presentation Project](/Images/interpreter.png)
 
 
 The first stage that happens in the interpretation process is ``Lexer``.
@@ -143,7 +143,7 @@ The last stage is the ``Send`` stage that occurred after the intrpreter finish t
 ## MVVM Architecture
 
 <p align="center">
-  <img src="/UML/mvvm.png" width="600">
+  <img src="/Images/mvvm.png" width="600">
 </p>
 
 In this project we chose to use the **MVVM architecture**.
@@ -159,7 +159,7 @@ separate the View from the Model.
 * **Data Binding** – We can wrap variables such as those in the View, and then when we change
 something in the text, it will automatically changed in the ViewModel.
 
-![Presentation Project](/UML/databind.png)
+![Presentation Project](/Images/databind.png)
 
 For the MVVM architecture to work, we'll have to wrap the different components together. 
 This is done by the Observer Pattern, which binds the different components together, and notify them about changes that are made or needs to be made as required by the operator. 
@@ -198,8 +198,4 @@ This is done by the Observer Pattern, which binds the different components toget
 
 ## Built With
 * [Eclipse](https://www.eclipse.org/downloads/packages/release/kepler/sr1/eclipse-ide-java-developers) - Java IDE
-* [Scene Builder](https://gluonhq.com/products/scene-builder/)  - Scene Builder 8.5.0
 
-
-## Authors
-* **[Gal Jacobson](https://www.linkedin.com/in/jacobsongal/)** & **[Roey Miller](https://www.linkedin.com/in/roey-miller-046b68199/)**
